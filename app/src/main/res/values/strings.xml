@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">cps_ca3_sensors</string>
+    <string name="button_start">Start :)</string>
+    <string name="gyroscope">Welcome Gyroscope Page</string>
+    <string name="back_to_launcher">Back To Launcher!</string>
+    <string name="start_the_game">Play!</string>
+</resources>
