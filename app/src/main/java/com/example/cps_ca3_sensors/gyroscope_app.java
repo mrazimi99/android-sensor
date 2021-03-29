@@ -25,6 +25,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.Random;
 import java.util.Timer;
@@ -32,7 +33,7 @@ import java.util.TimerTask;
 
 public class gyroscope_app extends AppCompatActivity implements SensorEventListener{
 
-    Button ballButton;
+    ImageView ballButton;
     Timer timer;
 
     DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -44,13 +45,14 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     private Sensor gyroscope_sensor;
 
 
-    private void setButtonRandomPosition(Button button, int x, int y){
+    private void setButtonRandomPosition(ImageView button, int x, int y){
 
         button.setX(x);
+
         button.setY(y);
     }
 
-    private void startRandomButton(final Button button, final int w, final int h) {
+    private void startRandomButton(final ImageView button, final int w, final int h) {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -114,7 +116,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
                     content.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
 
-                ballButton = (Button) findViewById(R.id.ball);
+                ballButton = (ImageView) findViewById(R.id.ball);
                 init(ballButton.getWidth(),ballButton.getHeight());
 
                 ballButton.setX(curWidth);
@@ -153,9 +155,19 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
         if(gyroscope_sensor != null){
 
             System.out.println("changed !");
-            System.out.println(event.values[0]);
-            System.out.println(event.values[1]);
-            System.out.println(event.values[2]);
+            if(event.values[0] != 0.0){
+                System.out.println("x");
+                System.out.println(event.values[0]);
+            }
+            if(event.values[1] != 0.0){
+                System.out.println("y");
+                System.out.println(event.values[1]);
+            }
+            if(event.values[2] != 0.0){
+                System.out.println("z");
+                System.out.println(event.values[2]);
+            }
+
         }
 
     }

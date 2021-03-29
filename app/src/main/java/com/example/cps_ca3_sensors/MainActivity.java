@@ -23,11 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, gyroscope_app.class);
-//        ViewGroup x = findViewById(R.id.activity_gyroscope_app);
-//        if(x == null)
-//            System.out.println("hoo");
-//        Log.d(TAG, "width " + x.getMeasuredWidth() );
-//        Log.d(TAG, "height " + x.getMeasuredHeight() );
         startActivity(intent);
 
 
