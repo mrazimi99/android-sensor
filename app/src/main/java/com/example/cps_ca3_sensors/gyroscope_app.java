@@ -43,11 +43,11 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     Ball ball;
 
 
-    private void setBallPosition(float x, float y){
+    private void setBallPosition(double x, double y){
 
-        ball_view.setX(x);
+        ball_view.setX((float)x);
 
-        ball_view.setY(y);
+        ball_view.setY((float)y);
     }
 
     private void showBall() {
@@ -86,7 +86,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
         final ConstraintLayout content =(ConstraintLayout) findViewById(R.id.activity_gyroscope_app);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        gyroscope_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        gyroscope_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
 
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -109,7 +109,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
                 float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
                 float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
-                ball = new Ball(x0,y0,ball_view.getWidth(),ball_view.getHeight());
+                ball = new Ball(200,100,ball_view.getWidth(),ball_view.getHeight());
                 showBall();
             }
         });
@@ -140,30 +140,39 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.d("MY_APP", event.toString());
+        //Log.d("MY_APP", event.toString());
+        //if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
+           // return;
         if(gyroscope_sensor != null){
+            System.out.println("sensor data");
+            double gx = -event.values[0];
+            double gy = event.values[1];
+            double gz = event.values[2] ;
 
-            System.out.println("changed !");
-            if(event.values[0] != 0.0){
-                System.out.println("x");
-                System.out.println(event.values[0]);
-            }
-            if(event.values[1] != 0.0){
-                System.out.println("y");
-                System.out.println(event.values[1]);
-            }
-            if(event.values[2] != 0.0){
-                System.out.println("z");
-                System.out.println(event.values[2]);
+            System.out.println(gx);
+            System.out.println(gy);
+            System.out.println(gz);
+            System.out.println("---------------------------------");
+
+            if(ball!=null)
+                ball.updateBallWithGravity(gx,gy,gz);
+
+
+
+
+
+
             }
 
-        }
+            /*System.out.println(event.values[0]);
+            System.out.println(event.values[1]);
+            System.out.println(event.values[2]);*/
 
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.d("MY_APP", sensor.toString() + " - " + accuracy);
+       // Log.d("MY_APP", sensor.toString() + " - " + accuracy);
     }
 }
 
