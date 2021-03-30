@@ -28,8 +28,8 @@ public class Ball {
     }
 
     public void initVelocity(){
-       // vx = new Random().nextInt(600) + 300;
-       // vy = new Random().nextInt(600) + 300;
+        // vx = new Random().nextInt(600) + 300;
+        // vy = new Random().nextInt(600) + 300;
         vx = 0;
         vy = 0;
     }
@@ -133,20 +133,23 @@ public class Ball {
         double N = findN(wall);
         double fx = 0;
         double fy = 0;
-
+        System.out.println("handleslip");
         if(wall.equals("up") || wall.equals("down")){
             if(vy <Config.epsilon && vy>-Config.epsilon){
                 if(Math.abs(Config.m*gx)>Math.abs(Config.uS*N)){
+                    System.out.println("1");
                     fx = (vx > 0) ? Config.m * gx - Config.uK * N :(vx < 0)? Config.m * gx + Config.uK * N :
-                         (gx > 0) ? Config.m * gx - Config.uS * N : Config.m * gx + Config.uS * N;
+                            (gx > 0) ? Config.m * gx - Config.uS * N : Config.m * gx + Config.uS * N;
 
-                    fy = (N<Config.epsilon)? Config.m*gy : 0;
+                    fy = (N == 0 )? Config.m*gy : 0;
                 }
                 else {
+                    System.out.println("2");
                     fx = 0;
-                    fy = (N<Config.epsilon)? Config.m*gy : 0;
+                    fy = (N == 0)? Config.m*gy : 0;
                 }
             }
+
         }
 
         if(wall.equals("right") || wall.equals("left")){
@@ -155,19 +158,26 @@ public class Ball {
                     fy = (vy > 0) ? Config.m * gy - Config.uK * N :(vy < 0)? Config.m * gy + Config.uK * N :
                             (gy > 0) ? Config.m * gy - Config.uS * N : Config.m * gy + Config.uS * N;
 
-                    fx = (N<Config.epsilon)? Config.m*gx : 0;
+                    fx = (N == 0)? Config.m*gx : 0;
                 }
                 else {
                     fy = 0;
-                    fx = (N<Config.epsilon)? Config.m*gx : 0;
+                    fx = (N == 0)? Config.m*gx : 0;
                 }
             }
         }
 
         ax = fx / Config.m;
         ay = fy / Config.m ;
-        vx = ax * 10 * Config.MS2S +vx;
-        vy = ay * 10 * Config.MS2S +vy;
+        if(fx == 0)
+            vx = 0;
+        else
+            vx = ax * 10 * Config.MS2S +vx;
+        if(fy == 0 )
+            vy = 0 ;
+        else
+            vy = ay * 10 * Config.MS2S +vy;
+        //System.out.println("fx "+fx+" fy "+fy+" n "+N);
 
     }
 
@@ -198,10 +208,17 @@ public class Ball {
 
             }
             else{
+
                 vx = 0;
                 vy = 0;
                 ax = 0;
                 ay = 0;
+//                double fx = Config.m * gx;
+//                double fy = Config.m * gy;
+//                ax = fx / Config.m;
+//                ay = fy / Config.m;
+//                vx = ax * 10 * Config.MS2S +vx;
+//                vy = ay * 10 * Config.MS2S +vy;
             }
 
         }
@@ -216,8 +233,8 @@ public class Ball {
 
         }
 
-        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+vx*(10*Config.MS2S)*250;
-        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+vy*(10*Config.MS2S)*250;
+        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+vx*(10*Config.MS2S)*200;
+        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+vy*(10*Config.MS2S)*200;
 
 
 
@@ -227,10 +244,6 @@ public class Ball {
         this.gx = gx;
         this.gy = gy;
         this.gz = gz;
-        System.out.println("Ball");
-        System.out.println(this.gx);
-        System.out.println(this.gy);
-        System.out.println(this.gz);
-        System.out.println("-------------------------------------------");
+
     }
 }

@@ -140,34 +140,21 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //Log.d("MY_APP", event.toString());
-        //if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
-           // return;
+
         if(gyroscope_sensor != null){
-            System.out.println("sensor data");
+//            System.out.println("sensor data");
             double gx = -event.values[0];
             double gy = event.values[1];
             double gz = event.values[2] ;
 
-            System.out.println(gx);
-            System.out.println(gy);
-            System.out.println(gz);
-            System.out.println("---------------------------------");
+//            System.out.println(gx);
+//            System.out.println(gy);
+//            System.out.println(gz);
+//            System.out.println("---------------------------------");
 
             if(ball!=null)
                 ball.updateBallWithGravity(gx,gy,gz);
-
-
-
-
-
-
             }
-
-            /*System.out.println(event.values[0]);
-            System.out.println(event.values[1]);
-            System.out.println(event.values[2]);*/
-
     }
 
     @Override
