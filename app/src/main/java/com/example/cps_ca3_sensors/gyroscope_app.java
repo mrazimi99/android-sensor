@@ -33,32 +33,30 @@ import java.util.TimerTask;
 
 public class gyroscope_app extends AppCompatActivity implements SensorEventListener{
 
-    ImageView ballButton;
+    ImageView ball_view;
     Timer timer;
 
     DisplayMetrics displayMetrics = new DisplayMetrics();
-    int screenWidth, screenHeight, initWidth, initHeight, curWidth, curHeight;
-    boolean xClockWise, yClockWise;
-    int vx, vy;
 
     private SensorManager mSensorManager;
     private Sensor gyroscope_sensor;
+    Ball ball;
 
 
-    private void setButtonRandomPosition(ImageView button, int x, int y){
+    private void setBallPosition(float x, float y){
 
-        button.setX(x);
+        ball_view.setX(x);
 
-        button.setY(y);
+        ball_view.setY(y);
     }
 
-    private void startRandomButton(final ImageView button, final int w, final int h) {
+    private void showBall() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
 
-                if(curWidth >= (screenWidth - w) || curWidth <= 0){
+              /* if(curWidth >= (screenWidth - w) || curWidth <= 0){
                     vx = -vx;
                 }
 
@@ -66,29 +64,19 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
                     vy = - vy;
                 }
                 curWidth += vx * 10;
-                curHeight += vy * 10;
+                curHeight += vy * 10;*/
 
-                setButtonRandomPosition(button, curWidth, curHeight);
+                ball.updateBallPosition();
+
+                setBallPosition(ball.getX(), ball.getY());
 
             }
         }, 0, 10);//Update button every second
     }
 
-    public void init(int width, int high){
+    public float getRandomNumber(int low, int high){
 
-
-        int hx = screenWidth - width - 5;
-        int lx = width + 5;
-
-        int hy = screenHeight - high - 5;
-        int ly = high + 5;
-        initWidth = new Random().nextInt(hx - lx ) + lx;
-        initHeight = new Random().nextInt(hy - ly ) + ly;
-        curHeight = initHeight;
-        curWidth = initWidth;
-
-        vx = 1;
-        vy = 1;
+        return new Random().nextInt(high - low ) + low;
     }
 
     @Override
@@ -104,10 +92,11 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                int w = content.getWidth();
-                int h = content.getHeight();
-                screenWidth = w;
-                screenHeight = h;
+
+
+                Config.screenHeight = content.getHeight();
+                Config.screenWidth = content.getWidth();
+
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -116,12 +105,12 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
                     content.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
 
-                ballButton = (ImageView) findViewById(R.id.ball);
-                init(ballButton.getWidth(),ballButton.getHeight());
+                ball_view = (ImageView) findViewById(R.id.ball);
 
-                ballButton.setX(curWidth);
-                ballButton.setY(curHeight);
-                startRandomButton(ballButton,ballButton.getWidth(),ballButton.getHeight() );
+                float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
+                float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
+                ball = new Ball(x0,y0,ball_view.getWidth(),ball_view.getHeight());
+                showBall();
             }
         });
 
