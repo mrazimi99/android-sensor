@@ -1,5 +1,6 @@
 package com.example.cps_ca3_sensors;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,7 +32,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Gravity extends AppCompatActivity implements SensorEventListener{
+public class Gyroscope extends AppCompatActivity implements SensorEventListener{
 
     ImageView ball_view;
     Timer timer;
@@ -39,7 +40,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     DisplayMetrics displayMetrics = new DisplayMetrics();
 
     private SensorManager mSensorManager;
-    private Sensor gravity_sensor;
+    private Sensor gyroscope_sensor;
     Ball ball;
 
 
@@ -84,11 +85,11 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gyroscope_app);
-        final ConstraintLayout content =(ConstraintLayout) findViewById(R.id.activity_gyroscope_app);
+        setContentView(R.layout.activity_gyroscope);
+        final ConstraintLayout content =(ConstraintLayout) findViewById(R.id.activity_gyroscope);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        gravity_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        gyroscope_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
 
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -121,8 +122,8 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     @Override
     protected void onResume() {
         super.onResume();
-        if (gravity_sensor != null) {
-            mSensorManager.registerListener(this, gravity_sensor,
+        if (gyroscope_sensor != null) {
+            mSensorManager.registerListener(this, gyroscope_sensor,
                     SensorManager.SENSOR_DELAY_GAME);
         }
 
@@ -131,7 +132,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     @Override
     protected void onPause() {
         super.onPause();
-        if (gravity_sensor != null) {
+        if (gyroscope_sensor != null) {
             mSensorManager.unregisterListener(this);
         }
         timer.cancel();
@@ -143,14 +144,16 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if(gravity_sensor != null){
-            double gx = -event.values[0];
-            double gy = event.values[1];
-            double gz = event.values[2] ;
+        if(gyroscope_sensor != null){
+            float gx = event.values[0];
+            float gy = event.values[1];
+            float gz = event.values[2] ;
 
-            if(ball!=null)
-                ball.updateBallWithGravity(gx,gy,gz);
+            if(ball!=null){
+                ball.gyroUpdate(gx,gy,gz);
             }
+
+        }
     }
 
     @Override

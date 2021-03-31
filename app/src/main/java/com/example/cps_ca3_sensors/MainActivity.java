@@ -20,10 +20,13 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(View view) {
         Intent intent = new Intent(this, Gravity.class);
         startActivity(intent);
-
-
-
-
     }
+
+    public void startGyroscope(View view) {
+        Intent intent = new Intent(this, Gyroscope.class);
+        startActivity(intent);
+    }
+
+
 }
 

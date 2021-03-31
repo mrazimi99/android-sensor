@@ -18,6 +18,10 @@ public class Ball {
 
     public double gx,gy,gz;
 
+    private double tethaX;
+    private double tethaY;
+    private double tethaZ;
+
 
     public Ball(double x,double y,float width,float height){
         this.x = x;
@@ -239,6 +243,7 @@ public class Ball {
             }
             else{
 
+
                 vx = 0;
                 vy = 0;
                 ax = 0;
@@ -268,6 +273,27 @@ public class Ball {
         this.gx = gx;
         this.gy = gy;
         this.gz = gz;
+
+    }
+
+    public void gyroUpdate(float xGyro, float yGyro, float zGyro)
+    {
+        //t = Config.getTime();
+        //updated = true;
+        float deltaT = (float) (10 * Config.MS2S)  ;
+        float newTethaX = (float) (yGyro * deltaT + tethaX);
+        float newTethaY = (float) (xGyro * deltaT + tethaY);
+        float newTethaZ = (float) (zGyro * deltaT + tethaZ);
+
+        float newXGravity = (float) (Config.g * (float)Math.sin(newTethaX));
+        float newYGravity = (float) (Config.g * (float)Math.sin(newTethaY));
+        float newZGravity = (float) (Config.g * (float)Math.cos(newTethaZ));
+
+        tethaX = newTethaX;
+        tethaY = newTethaY;
+        tethaZ = newTethaZ;
+
+        updateBallWithGravity( -newXGravity, newYGravity, newZGravity);
 
     }
 }
