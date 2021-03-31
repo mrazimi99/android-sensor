@@ -27,6 +27,8 @@ public class Ball {
         initVelocity(5,20);
     }
 
+
+
     public void initVelocity(int low,int high){
         vx = new Random().nextInt(high - low) + low;
         vy = new Random().nextInt(high - low) + low;
@@ -40,6 +42,14 @@ public class Ball {
         return y;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     public boolean hitWall(){
         if(x >= (Config.screenWidth - width) || x <= 0){
             return true;
@@ -51,6 +61,8 @@ public class Ball {
 
         return false;
     }
+
+
 
     public String getWall(){
         int wall_num = 0;
@@ -147,18 +159,16 @@ public class Ball {
         double N = findN(wall);
         double fx = 0;
         double fy = 0;
-        System.out.println("handleslip");
+
         if(wall.equals("up") || wall.equals("down")){
             if(vy <Config.epsilon && vy>-Config.epsilon){
                 if(Math.abs(Config.m*gx)>Math.abs(Config.uS*N)){
-                    System.out.println("1");
                     fx = (vx > 0) ? Config.m * gx - Config.uK * N :(vx < 0)? Config.m * gx + Config.uK * N :
                             (gx > 0) ? Config.m * gx - Config.uS * N : Config.m * gx + Config.uS * N;
 
                     fy = (N == 0 )? Config.m*gy : 0;
                 }
                 else {
-                    System.out.println("2");
                     fx = 0;
                     fy = (N == 0)? Config.m*gy : 0;
                 }
@@ -191,7 +201,6 @@ public class Ball {
             vy = 0 ;
         else
             vy = ay * 10 * Config.MS2S +vy;
-        //System.out.println("fx "+fx+" fy "+fy+" n "+N);
 
     }
 
@@ -234,12 +243,6 @@ public class Ball {
                 vy = 0;
                 ax = 0;
                 ay = 0;
-//                double fx = Config.m * gx;
-//                double fy = Config.m * gy;
-//                ax = fx / Config.m;
-//                ay = fy / Config.m;
-//                vx = ax  10  Config.MS2S +vx;
-//                vy = ay  10  Config.MS2S +vy;
             }
 
         }

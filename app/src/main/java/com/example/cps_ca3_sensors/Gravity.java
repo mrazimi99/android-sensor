@@ -31,7 +31,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class gyroscope_app extends AppCompatActivity implements SensorEventListener{
+public class Gravity extends AppCompatActivity implements SensorEventListener{
 
     ImageView ball_view;
     Timer timer;
@@ -39,14 +39,13 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     DisplayMetrics displayMetrics = new DisplayMetrics();
 
     private SensorManager mSensorManager;
-    private Sensor gyroscope_sensor;
+    private Sensor gravity_sensor;
     Ball ball;
 
 
     private void setBallPosition(double x, double y){
 
         ball_view.setX((float)x);
-
         ball_view.setY((float)y);
     }
 
@@ -56,23 +55,16 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
             @Override
             public void run() {
 
-              /* if(curWidth >= (screenWidth - w) || curWidth <= 0){
-                    vx = -vx;
-                }
-
-                if(curHeight >= (screenHeight - h) || curHeight <= 0){
-                    vy = - vy;
-                }
-                curWidth += vx * 10;
-                curHeight += vy * 10;*/
                 Button btn = (Button) findViewById(R.id.start_game);
-
 
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        if(ball.clickAccess == 1)
-//                            ball.clickAccess = 2;
+                        float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
+                        float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
+                        ball.setX(x0);
+                        ball.setY(y0);
+                        ball.initVelocity(5,20);
 
                     }
                 });
@@ -96,7 +88,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
         final ConstraintLayout content =(ConstraintLayout) findViewById(R.id.activity_gyroscope_app);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        gyroscope_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        gravity_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
 
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -119,7 +111,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
                 float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
                 float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
-                ball = new Ball(200,100,ball_view.getWidth(),ball_view.getHeight());
+                ball = new Ball(x0,y0,ball_view.getWidth(),ball_view.getHeight());
                 showBall();
             }
         });
@@ -129,8 +121,8 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (gyroscope_sensor != null) {
-            mSensorManager.registerListener(this, gyroscope_sensor,
+        if (gravity_sensor != null) {
+            mSensorManager.registerListener(this, gravity_sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
 
@@ -139,7 +131,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onPause() {
         super.onPause();
-        if (gyroscope_sensor != null) {
+        if (gravity_sensor != null) {
             mSensorManager.unregisterListener(this);
         }
         timer.cancel();
@@ -151,16 +143,10 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if(gyroscope_sensor != null){
-//            System.out.println("sensor data");
+        if(gravity_sensor != null){
             double gx = -event.values[0];
             double gy = event.values[1];
             double gz = event.values[2] ;
-
-//            System.out.println(gx);
-//            System.out.println(gy);
-//            System.out.println(gz);
-//            System.out.println("---------------------------------");
 
             if(ball!=null)
                 ball.updateBallWithGravity(gx,gy,gz);
@@ -169,7 +155,6 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-       // Log.d("MY_APP", sensor.toString() + " - " + accuracy);
     }
 }
 
