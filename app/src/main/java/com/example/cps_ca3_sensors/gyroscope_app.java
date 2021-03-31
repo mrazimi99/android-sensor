@@ -26,7 +26,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.Random;
 import java.util.Timer;
@@ -72,8 +71,8 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(ball.clickAccess == 1)
-                            ball.clickAccess = 2;
+//                        if(ball.clickAccess == 1)
+//                            ball.clickAccess = 2;
 
                     }
                 });
@@ -120,7 +119,7 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
                 float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
                 float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
-                ball = new Ball(x0,y0,ball_view.getWidth(),ball_view.getHeight());
+                ball = new Ball(200,100,ball_view.getWidth(),ball_view.getHeight());
                 showBall();
             }
         });
@@ -165,12 +164,12 @@ public class gyroscope_app extends AppCompatActivity implements SensorEventListe
 
             if(ball!=null)
                 ball.updateBallWithGravity(gx,gy,gz);
-        }
+            }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Log.d("MY_APP", sensor.toString() + " - " + accuracy);
+       // Log.d("MY_APP", sensor.toString() + " - " + accuracy);
     }
 }
 
