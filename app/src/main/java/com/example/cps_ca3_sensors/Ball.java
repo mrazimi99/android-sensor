@@ -262,8 +262,8 @@ public class Ball {
 
         }
 
-        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+v0x*(10*Config.MS2S)*250;
-        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+v0y*(10*Config.MS2S)*250;
+        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+v0x*(10*Config.MS2S)*300;
+        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+v0y*(10*Config.MS2S)*300;
 
 
 
@@ -285,15 +285,16 @@ public class Ball {
         float newTethaY = (float) (xGyro * deltaT + tethaY);
         float newTethaZ = (float) (zGyro * deltaT + tethaZ);
 
-        float newXGravity = (float) (Config.g * (float)Math.sin(newTethaX));
-        float newYGravity = (float) (Config.g * (float)Math.sin(newTethaY));
-        float newZGravity = (float) (Config.g * (float)Math.cos(newTethaZ));
+
+        float newXGravity = (float) (Config.g * (float)Math.sin(newTethaX) * 7);
+        float newYGravity = (float) (Config.g * (float)Math.sin(newTethaY) * 7);
+        float newZGravity = (float) (Config.g * (float)Math.cos(newTethaZ) * 7);
 
         tethaX = newTethaX;
         tethaY = newTethaY;
         tethaZ = newTethaZ;
 
-        updateBallWithGravity( -newXGravity, newYGravity, newZGravity);
+        updateBallWithGravity( newXGravity, newYGravity, newZGravity);
 
     }
 }

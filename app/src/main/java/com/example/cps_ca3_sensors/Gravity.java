@@ -77,7 +77,6 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
     }
 
     public float getRandomNumber(int low, int high){
-
         return new Random().nextInt(high - low ) + low;
     }
 
@@ -123,9 +122,8 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
         super.onResume();
         if (gravity_sensor != null) {
             mSensorManager.registerListener(this, gravity_sensor,
-                    SensorManager.SENSOR_DELAY_GAME);
+                    SensorManager.SENSOR_DELAY_NORMAL);
         }
-
     }
 
     @Override
@@ -150,7 +148,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
 
             if(ball!=null)
                 ball.updateBallWithGravity(gx,gy,gz);
-            }
+        }
     }
 
     @Override

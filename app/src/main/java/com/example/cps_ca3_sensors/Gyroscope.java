@@ -124,7 +124,7 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
         super.onResume();
         if (gyroscope_sensor != null) {
             mSensorManager.registerListener(this, gyroscope_sensor,
-                    SensorManager.SENSOR_DELAY_GAME);
+                    SensorManager.SENSOR_DELAY_NORMAL);
         }
 
     }
@@ -150,14 +150,15 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
             float gz = event.values[2] ;
 
             if(ball!=null){
-                ball.gyroUpdate(gx,gy,gz);
-            }
 
+                ball.gyroUpdate(gx * 1 ,gy * 1,gz * 1);
+            }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // normal -
     }
 }
 
