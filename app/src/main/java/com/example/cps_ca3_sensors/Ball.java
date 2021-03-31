@@ -17,6 +17,7 @@ public class Ball {
     public float width;
     public float height;
 
+    public int clickAccess = 0;
     public double gx,gy,gz;
 
     public Ball(double x,double y,float width,float height){
@@ -28,10 +29,8 @@ public class Ball {
     }
 
     public void initVelocity(){
-        // vx = new Random().nextInt(600) + 300;
-        // vy = new Random().nextInt(600) + 300;
-        vx = 0;
-        vy = 0;
+        vx = new Random().nextInt(15) + 5;
+        vy = new Random().nextInt(15 ) + 5;
     }
 
     public double getX(){
@@ -57,25 +56,42 @@ public class Ball {
     public String getWall(){
         int wall_num = 0;
         String wall="";
+        double _x = 0, _y = 0;
         if( y >=Config.screenHeight - height ) {
             wall_num += 1;
             wall = "down";
+            _y = Config.screenHeight - height - 1;
         }
+
         if(y<=0) {
             wall_num += 1;
             wall = "up";
+            _y =  1;
         }
+
         if(x >= Config.screenWidth - width) {
             wall_num += 1;
             wall = "right";
+            _x = Config.screenWidth - width - 1;
         }
+
         if(x<=0) {
             wall_num += 1;
             wall = "left";
+            _x = 1;
         }
 
-        if(wall_num>1)
+        if(wall_num>1){
+
+            x = _x;
+            y = _y;
+
+            if(clickAccess == 0)
+                clickAccess = 1;
+
             return "corner";
+        }
+
         return wall;
     }
 
@@ -133,18 +149,16 @@ public class Ball {
         double N = findN(wall);
         double fx = 0;
         double fy = 0;
-        System.out.println("handleslip");
+
         if(wall.equals("up") || wall.equals("down")){
             if(vy <Config.epsilon && vy>-Config.epsilon){
                 if(Math.abs(Config.m*gx)>Math.abs(Config.uS*N)){
-                    System.out.println("1");
                     fx = (vx > 0) ? Config.m * gx - Config.uK * N :(vx < 0)? Config.m * gx + Config.uK * N :
                             (gx > 0) ? Config.m * gx - Config.uS * N : Config.m * gx + Config.uS * N;
 
                     fy = (N == 0 )? Config.m*gy : 0;
                 }
                 else {
-                    System.out.println("2");
                     fx = 0;
                     fy = (N == 0)? Config.m*gy : 0;
                 }
@@ -169,6 +183,7 @@ public class Ball {
 
         ax = fx / Config.m;
         ay = fy / Config.m ;
+
         if(fx == 0)
             vx = 0;
         else
@@ -177,9 +192,16 @@ public class Ball {
             vy = 0 ;
         else
             vy = ay * 10 * Config.MS2S +vy;
+
+        if(clickAccess == 2){
+            initVelocity();
+            clickAccess = 0;
+        }
         //System.out.println("fx "+fx+" fy "+fy+" n "+N);
 
     }
+
+
 
     public void handleReflect(String wall){
         double v1 = Math.sqrt(vx*vx + vy*vy);
@@ -196,6 +218,10 @@ public class Ball {
 
 
     public void updateBallPosition(){
+
+        double v0x = vx;
+        double v0y = vy;
+
         if(hitWall()){
             String wall = getWall();
             if(!wall.equals("corner")){
@@ -204,6 +230,9 @@ public class Ball {
                 }
                 else{
                     handleReflect(wall);
+                    v0x = vx;
+                    v0y = vy;
+
                 }
 
             }
@@ -233,8 +262,8 @@ public class Ball {
 
         }
 
-        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+vx*(10*Config.MS2S)*200;
-        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+vy*(10*Config.MS2S)*200;
+        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+v0x*(10*Config.MS2S)*200;
+        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+v0y*(10*Config.MS2S)*200;
 
 
 
