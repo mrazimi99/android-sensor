@@ -41,6 +41,7 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
 
     private SensorManager mSensorManager;
     private Sensor gyroscope_sensor;
+    private float timestamp;
     Ball ball;
 
 
@@ -137,22 +138,25 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
         }
         timer.cancel();
         timer.purge();
-
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if(gyroscope_sensor != null){
-            float gx = event.values[0];
-            float gy = event.values[1];
-            float gz = event.values[2] ;
+        if(gyroscope_sensor != null) {
+            if (timestamp != 0) {
+                final float dT = (event.timestamp - timestamp) * Config.NS2S;
 
-            if(ball!=null){
+                float axisX = event.values[0];
+                float axisY = event.values[1];
+                float axisZ = event.values[2];
 
-                ball.gyroUpdate(gx * 1 ,gy * 1,gz * 1);
+                if (ball != null) {
+                    ball.gyroUpdate(axisX * 1, axisY * 1, axisZ * 1, dT);
+                }
             }
+            timestamp = event.timestamp;
         }
     }
 

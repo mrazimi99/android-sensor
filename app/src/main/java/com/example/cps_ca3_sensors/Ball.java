@@ -276,25 +276,15 @@ public class Ball {
 
     }
 
-    public void gyroUpdate(float xGyro, float yGyro, float zGyro)
+    public void gyroUpdate(float xGyro, float yGyro, float zGyro, float deltaT)
     {
-        //t = Config.getTime();
-        //updated = true;
-        float deltaT = (float) (10 * Config.MS2S)  ;
-        float newTethaX = (float) (yGyro * deltaT + tethaX);
-        float newTethaY = (float) (xGyro * deltaT + tethaY);
-        float newTethaZ = (float) (zGyro * deltaT + tethaZ);
+        tethaZ += (float) (zGyro * deltaT);
+        tethaZ %= Math.toRadians(360);
 
+        float newXGravity = (float) (-Config.g * (float)Math.cos(tethaZ) * 1);
+        float newYGravity = (float) (-Config.g * (float)Math.sin(tethaZ) * 1);
 
-        float newXGravity = (float) (Config.g * (float)Math.sin(newTethaX) * 7);
-        float newYGravity = (float) (Config.g * (float)Math.sin(newTethaY) * 7);
-        float newZGravity = (float) (Config.g * (float)Math.cos(newTethaZ) * 7);
-
-        tethaX = newTethaX;
-        tethaY = newTethaY;
-        tethaZ = newTethaZ;
-
-        updateBallWithGravity( newXGravity, newYGravity, newZGravity);
+        updateBallWithGravity(newXGravity, newYGravity, 0);
 
     }
 }
