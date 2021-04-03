@@ -23,12 +23,14 @@ public class Ball {
         this.y = y;
         this.height = height;
         this.width = width;
-        initVelocity(5,20);
+        initVelocity(6,12);
     }
 
     public void initVelocity(int low,int high){
         vx = new Random().nextInt(high - low) + low;
         vy = new Random().nextInt(high - low) + low;
+        //vx = 20;
+        //vy = 30;
     }
 
     public double getX(){

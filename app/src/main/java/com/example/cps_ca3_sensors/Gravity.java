@@ -49,11 +49,13 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
-                        float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
+
+                        float x0 = getRandomNumber(Math.round(Config.screenWidth/2) - 2 * ball_view.getWidth() , Math.round(Config.screenWidth/2) + 2 * ball_view.getWidth() );
+                        float y0 = getRandomNumber(Math.round(Config.screenHeight/2) - 2 * ball_view.getHeight() , Math.round(Config.screenHeight/2) +  2 * ball_view.getHeight()) ;
+
                         ball.setX(x0);
                         ball.setY(y0);
-                        ball.initVelocity(5,20);
+                        ball.initVelocity(6,12);
 
                     }
                 });
@@ -94,8 +96,8 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
 
                 ball_view = (ImageView) findViewById(R.id.ball);
 
-                float x0 = getRandomNumber(ball_view.getWidth() + 5 , Config.screenWidth - ball_view.getWidth() -5);
-                float y0 = getRandomNumber(ball_view.getHeight() + 5 , Config.screenHeight - ball_view.getHeight() -5) ;
+                float x0 = getRandomNumber(Math.round(Config.screenWidth/2) - 2 * ball_view.getWidth() , Math.round(Config.screenWidth/2) + 2 * ball_view.getWidth() );
+                float y0 = getRandomNumber(Math.round(Config.screenHeight/2) - 2 * ball_view.getHeight() , Math.round(Config.screenHeight/2) + 2 * ball_view.getHeight()) ;
                 ball = new Ball(x0,y0,ball_view.getWidth(),ball_view.getHeight());
                 showBall();
             }
