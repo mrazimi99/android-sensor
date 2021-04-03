@@ -192,11 +192,11 @@ public class Ball {
         if(fx == 0)
             vx = 0;
         else
-            vx = ax * 10 * Config.MS2S +vx;
+            vx = ax * 5 * Config.MS2S +vx;
         if(fy == 0 )
             vy = 0 ;
         else
-            vy = ay * 10 * Config.MS2S +vy;
+            vy = ay * 5 * Config.MS2S +vy;
 
     }
 
@@ -244,12 +244,23 @@ public class Ball {
             double fy = Config.m * gy;
             ax = fx / Config.m;
             ay = fy / Config.m;
-            vx = ax * 10 * Config.MS2S +vx;
-            vy = ay * 10 * Config.MS2S +vy;
+            vx = ax * 5 * Config.MS2S +vx;
+            vy = ay * 5 * Config.MS2S +vy;
         }
 
-        x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+v0x*(10*Config.MS2S)*300;
-        y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+v0y*(10*Config.MS2S)*300;
+        x += 0.5*ax*(5*Config.MS2S)*(5*Config.MS2S)+v0x*(5*Config.MS2S)*300;
+        y += 0.5*ay*(5*Config.MS2S)*(5*Config.MS2S)+v0y*(5*Config.MS2S)*300;
+
+        if(x < 0)
+            x = 0;
+        if(y < 0)
+            y = 0;
+        if(x > (Config.screenWidth - width))
+            x = (Config.screenWidth - width);
+        if(y > (Config.screenHeight - height))
+            y = (Config.screenHeight - height);
+
+
     }
 
     public void updateGravity(double gx, double gy, double gz){

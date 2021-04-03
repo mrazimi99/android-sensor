@@ -64,7 +64,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
                 setBallPosition(ball.getX(), ball.getY());
 
             }
-        }, 0, 10);      //Update button every 10 second
+        }, 0, 5);      //Update button every 10 second
     }
 
     public float getRandomNumber(int low, int high){
