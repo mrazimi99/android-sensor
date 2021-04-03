@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:onClick="sendMessage"
+            android:onClick="startGravity"
             android:text="Gravity Game" />
 
         <Button

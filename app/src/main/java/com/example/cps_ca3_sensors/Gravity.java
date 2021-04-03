@@ -1,15 +1,9 @@
 package com.example.cps_ca3_sensors;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.drawable.ShapeDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,13 +11,8 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -73,7 +62,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
                 setBallPosition(ball.getX(), ball.getY());
 
             }
-        }, 0, 10);//Update button every second
+        }, 0, 10);      //Update button every 10 second
     }
 
     public float getRandomNumber(int low, int high){
@@ -89,15 +78,12 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gravity_sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
-
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
 
-
                 Config.screenHeight = content.getHeight();
                 Config.screenWidth = content.getWidth();
-
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -114,12 +100,15 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
                 showBall();
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (ball != null)
+            showBall();
+
         if (gravity_sensor != null) {
             mSensorManager.registerListener(this, gravity_sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
@@ -134,9 +123,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
         }
         timer.cancel();
         timer.purge();
-
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -147,7 +134,7 @@ public class Gravity extends AppCompatActivity implements SensorEventListener{
             double gz = event.values[2] ;
 
             if(ball!=null)
-                ball.updateBallWithGravity(gx,gy,gz);
+                ball.updateGravity(gx,gy,gz);
         }
     }
 

@@ -16,8 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-
-    public void sendMessage(View view) {
+    public void startGravity(View view) {
         Intent intent = new Intent(this, Gravity.class);
         startActivity(intent);
     }
@@ -26,7 +25,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Gyroscope.class);
         startActivity(intent);
     }
-
-
 }
 

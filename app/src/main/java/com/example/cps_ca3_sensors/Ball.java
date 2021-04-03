@@ -1,7 +1,5 @@
 package com.example.cps_ca3_sensors;
 
-import android.widget.ImageView;
-
 import java.util.Random;
 
 
@@ -18,10 +16,7 @@ public class Ball {
 
     public double gx,gy,gz;
 
-    private double tethaX;
-    private double tethaY;
     private double tethaZ;
-
 
     public Ball(double x,double y,float width,float height){
         this.x = x;
@@ -30,8 +25,6 @@ public class Ball {
         this.width = width;
         initVelocity(5,20);
     }
-
-
 
     public void initVelocity(int low,int high){
         vx = new Random().nextInt(high - low) + low;
@@ -55,18 +48,15 @@ public class Ball {
     }
 
     public boolean hitWall(){
-        if(x >= (Config.screenWidth - width) || x <= 0){
+        if(x >= (Config.screenWidth - width) || x <= 0) {
             return true;
         }
 
-        if(y >= (Config.screenHeight - height) || y <= 0){
+        if(y >= (Config.screenHeight - height) || y <= 0) {
             return true;
         }
-
         return false;
     }
-
-
 
     public String getWall(){
         int wall_num = 0;
@@ -233,58 +223,47 @@ public class Ball {
                 if(isSlip(wall)){
                     handleSlip(wall);
                 }
-                else{
+                else {
                     handleReflect(wall);
                     v0x = vx;
                     v0y = vy;
 
                 }
-
             }
-            else{
-
-
+            else {
                 vx = 0;
                 vy = 0;
                 ax = 0;
                 ay = 0;
             }
-
         }
-        else{
-
+        else {
             double fx = Config.m * gx;
             double fy = Config.m * gy;
             ax = fx / Config.m;
             ay = fy / Config.m;
             vx = ax * 10 * Config.MS2S +vx;
             vy = ay * 10 * Config.MS2S +vy;
-
         }
 
         x += 0.5*ax*(10*Config.MS2S)*(10*Config.MS2S)+v0x*(10*Config.MS2S)*300;
         y += 0.5*ay*(10*Config.MS2S)*(10*Config.MS2S)+v0y*(10*Config.MS2S)*300;
-
-
-
     }
 
-    public void updateBallWithGravity(double gx,double gy,double gz){
+    public void updateGravity(double gx, double gy, double gz){
         this.gx = gx;
         this.gy = gy;
         this.gz = gz;
-
     }
 
-    public void gyroUpdate(float xGyro, float yGyro, float zGyro, float deltaT)
+    public void updateRotation(float axisZ, float deltaT)
     {
-        tethaZ += (float) (zGyro * deltaT);
+        tethaZ += (float) (axisZ * deltaT);
         tethaZ %= Math.toRadians(360);
 
-        float newXGravity = (float) (-Config.g * (float)Math.cos(tethaZ) * 1);
-        float newYGravity = (float) (-Config.g * (float)Math.sin(tethaZ) * 1);
+        float newXGravity = (float) (-Config.g * (float)Math.cos(tethaZ));
+        float newYGravity = (float) (-Config.g * (float)Math.sin(tethaZ));
 
-        updateBallWithGravity(newXGravity, newYGravity, 0);
-
+        updateGravity(newXGravity, newYGravity, 0);
     }
 }

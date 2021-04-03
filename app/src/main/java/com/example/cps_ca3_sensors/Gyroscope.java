@@ -1,16 +1,10 @@
 package com.example.cps_ca3_sensors;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.drawable.ShapeDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,13 +12,8 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -75,7 +64,7 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
                 setBallPosition(ball.getX(), ball.getY());
 
             }
-        }, 0, 10);//Update button every second
+        }, 0, 10);      //Update button every 10 second
     }
 
     public float getRandomNumber(int low, int high){
@@ -97,10 +86,8 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
             @Override
             public void onGlobalLayout() {
 
-
                 Config.screenHeight = content.getHeight();
                 Config.screenWidth = content.getWidth();
-
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -117,17 +104,19 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
                 showBall();
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (ball != null)
+            showBall();
+
         if (gyroscope_sensor != null) {
             mSensorManager.registerListener(this, gyroscope_sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
-
     }
 
     @Override
@@ -140,20 +129,16 @@ public class Gyroscope extends AppCompatActivity implements SensorEventListener{
         timer.purge();
     }
 
-
     @Override
     public void onSensorChanged(SensorEvent event) {
 
         if(gyroscope_sensor != null) {
             if (timestamp != 0) {
                 final float dT = (event.timestamp - timestamp) * Config.NS2S;
-
-                float axisX = event.values[0];
-                float axisY = event.values[1];
                 float axisZ = event.values[2];
 
                 if (ball != null) {
-                    ball.gyroUpdate(axisX * 1, axisY * 1, axisZ * 1, dT);
+                    ball.updateRotation(axisZ, dT);
                 }
             }
             timestamp = event.timestamp;
